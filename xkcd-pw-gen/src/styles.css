@@ -1,5 +1,5 @@
 html, body {
-    height: 100%;
+    height: 99%; /*100% height causes scroll bar to appear in browser (tested firefox)*/
     background-color: darkslategrey;
   }
 body {
