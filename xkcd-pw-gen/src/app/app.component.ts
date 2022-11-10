@@ -1,22 +1,20 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Observable, Subscribable, Subscription } from 'rxjs';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DictService } from './dict.service';
 
 @Component({
   selector: 'app-root',
   template: `
-            <form [formGroup]="form" (ngSubmit)="generatePass()" class="form">
+            <form [formGroup]="form" (ngSubmit)="sendPass()" class="form">
               <label for="num-words">number of words</label>
-              <select formControlName="num-words" name="num-words" id="num-words">
+              <select formControlName="numWords" name="num-words" id="num-words">
                 <option value="3">3</option>
                 <option selected="true"value="4">4</option>
                 <option value="5">5</option>
                 <option value="6">6</option>
               </select>
               <label for="char-limit">character limit</label>
-              <select formControlName="char-limit" name="char-limit" id="char-limit">
+              <select formControlName="charLimit" name="char-limit" id="char-limit">
                 <option value="-1">none</option>
                 <option value="16">16</option>
                 <option value="20">20</option>
@@ -26,7 +24,7 @@ import { DictService } from './dict.service';
               </select>
               <label for="seperator">seperator</label>
               <select formControlName="seperator" name="seperator" id="seperator">
-                <option value="">none</option>
+                <option value="none">none</option>
                 <option value=" ">[space]</option>
                 <option value="-">-</option>
                 <option value="_">_</option>
@@ -34,12 +32,10 @@ import { DictService } from './dict.service';
                 <option value=";">;</option>
               </select>
               <label for="partial-words">allow last word cut-off</label>
-              <input type="checkbox" formControlName="partial-words" id="partial-words">
+              <input type="checkbox" formControlName="partialWords" id="partial-words" [defaultChecked]="false">
               <label for="camel-case">CamelCase</label>
-              <input type="checkbox" formControlName="camel-case" id="camel-case">
-              <label for="leet">13371FY</label>
-              <input type="checkbox" formControlName="leet" id="leet">
-              <button (click)="generatePass()" class="submit" type="submit">Generate</button>
+              <input type="checkbox" formControlName="camelCase" id="camel-case" [defaultChecked]="false">
+              <button class="submit" type="submit">Generate</button>
             </form>
             <div *ngIf="generatedPass !== undefined; else password_display">
                 <p>{{generatedPass}}</p>
@@ -49,26 +45,31 @@ import { DictService } from './dict.service';
             </ng-template>
             
   `,
-  styleUrls:['../styles.css']
+  styleUrls: ['../styles.css']
 })
 export class AppComponent {
   form!: FormGroup;
   generatedPass: string | undefined;
 
-  constructor(private formBuilder: FormBuilder, private dict: DictService, private activatedRoute: ActivatedRoute){
+  constructor(private formBuilder: FormBuilder, private dict: DictService) {
     this.form = formBuilder.group({
-      'num-words':['4'],
-      'char-limit':['-1'],
-      'seperator':[''],
-      'partial-words':[''],
-      'camel-case':[''],
-      'leet':['']
+      'numWords': ['4'],
+      'charLimit': ['-1'],
+      'seperator': ['none'],
+      'partialWords': [''],
+      'camelCase': ['']
     })
-  }  
-  
-  generatePass(){
-    console.log(this.form.value)
-    
   }
-  
+
+  sendPass() {
+    const numWords = this.form.value.numWords
+    const charLimit = this.form.value.charLimit
+    const seperator = this.form.value.seperator
+    const partialWords = this.form.value.partialWords
+    const camelCase = this.form.value.camelCase
+    const formObj: JSON = JSON.parse(`{ "numWords" : ${numWords}, "charLimit": ${charLimit}, "seperator": "${seperator}", "partialWords": "${partialWords}", "camelCase": "${camelCase}" }`);
+    this.generatedPass = this.dict.generatePass(formObj);
+  }
+
+
 }
