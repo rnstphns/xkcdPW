@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
+  },
+  "name": "password-backend",
+  "version": "1.0.0",
+  "description": "Dictionary of local csv files and logic to arrange them into a password string with parameters passed from 'xkcd-pw-gen' Angular app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app",
+    "test": "nodemon app"
+  },
+  "author": "rnstphns",
+  "license": "ISC"
+}
