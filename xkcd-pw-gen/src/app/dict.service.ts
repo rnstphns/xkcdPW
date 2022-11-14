@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
-import { join } from '@fireflysemantics/join';
 
 @Injectable({
   providedIn: 'root'

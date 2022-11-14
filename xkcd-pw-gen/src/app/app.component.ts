@@ -65,8 +65,10 @@ export class AppComponent {
     const numWords = this.form.value.numWords
     const charLimit = this.form.value.charLimit
     const seperator = this.form.value.seperator
-    const partialWords = this.form.value.partialWords
-    const camelCase = this.form.value.camelCase
+    let partialWords = this.form.value.partialWords
+    let camelCase = this.form.value.camelCase
+    if(partialWords === "") partialWords = false
+    if(camelCase === "") camelCase = false
     const formObj: JSON = JSON.parse(`{ "numWords" : ${numWords}, "charLimit": ${charLimit}, "seperator": "${seperator}", "partialWords": "${partialWords}", "camelCase": "${camelCase}" }`);
     this.generatedPass = this.dict.generatePass(formObj);
   }
