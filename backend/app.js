@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const { generate } = require("./logic");
-const { buildDictionary } = require("./dict");
+const dict = require("./dict");
 const PORT = 3000;
 
 app.get("/", express.json(), generate);
@@ -17,10 +17,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, function(){
-  buildDictionary()
+  dict.buildDictionary()
+  console.log(`words of the day: ${dict.getRandomAdjective()} ${dict.getRandomAdverb()} ${dict.getRandomNoun()} ${dict.getRandomVerb()}`)
   console.log(`app listening on ${PORT}`)
-});
-
-app.on("close", () => {
-  //close db connection
 });

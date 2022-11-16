@@ -2,6 +2,6 @@
 GET http://localhost:3000/
 Content-Type: application/json
 
-{"numWords":4,"charLimit":-1,"seperator":"none","partialWords":"false","camelCase":"false"}
+{"numWords":8,"charLimit":-1,"seperator":"|","partialWords":"false","camelCase":"false"}
 ### 
 
