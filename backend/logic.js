@@ -45,19 +45,26 @@ wordFromRandomTable = () => {
   }
 };
 
-assembleRandomPass = (numWords, seperator) => {
+assembleRandomPass = (numWords, seperator, camelCase) => {
   let password = "";
   for (let index = 0; index < numWords; index++) {
-    password += randomWord();
+    let random = randomWord()
+    if(camelCase) {
+        firstLetter = random.charAt(0)
+        let firstLetterCap = firstLetter.toUpperCase()
+        let remainingLetters = random.slice(1)
+        random = firstLetterCap + remainingLetters
+    }
+    password += random;
     password += seperator;
   }
-  return password;
+  return password.trim();
 };
 
 module.exports.generate = async (req, res, next) => {
   try {
     const { numWords, charLimit, seperator, camelCase } = req.body;
-    const pass = assembleRandomPass(numWords, seperator);
+    const pass = assembleRandomPass(numWords, seperator, camelCase);
     console.log(pass);
     res.json({ success: true, password: pass });
   } catch (err) {
