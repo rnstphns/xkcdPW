@@ -38,10 +38,10 @@ import { DictService } from './dict.service';
               <button class="submit" type="submit">Generate</button>
             </form>
             <div *ngIf="this.generatedPass != undefined; else password_display">
-              <p>{{this.generatedPass}}</p>
+              <h1>{{this.generatedPass}}</h1>
             </div>
             <ng-template #password_display>
-              <h1>~password will go here~</h1>
+              <h1>~</h1>
             </ng-template>
             
   `,
@@ -70,7 +70,8 @@ export class AppComponent {
     if(partialWords === "") partialWords = false
     if(camelCase === "") camelCase = false
     const formObj: JSON = JSON.parse(`{"numWords":${numWords},"charLimit":${charLimit},"seperator":"${seperator}","partialWords":"${partialWords}","camelCase":"${camelCase}"}`);
-    this.generatedPass = this.dict.generatePass(formObj)  
+    this.generatedPass = this.dict.generatePass(formObj)
+    //TODO page view is 1 behind the object. force refresh somehow?  
   }
 
 }

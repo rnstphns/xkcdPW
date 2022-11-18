@@ -45,11 +45,11 @@ wordFromRandomTable = () => {
   }
 };
 
-assembleRandomPass = (numWords, seperator, camelCase) => {
+assembleRandomPass = (numWords, charLimit, seperator, camelCase) => {
   let password = "";
   for (let index = 0; index < numWords; index++) {
     let random = randomWord();
-    if (camelCase) {
+    if (camelCase === "true") {
       firstLetter = random.charAt(0);
       let firstLetterCap = firstLetter.toUpperCase();
       let remainingLetters = random.slice(1);
@@ -58,14 +58,21 @@ assembleRandomPass = (numWords, seperator, camelCase) => {
     password += random;
     password += seperator;
   }
-  return password.trim();
+  if(charLimit !== -1){
+    password = password.substring(0, charLimit)
+  }
+  if(seperator !== ""){
+    password = password.substring(0, password.length-1).trim()
+  }
+  return password;
 };
 
 module.exports.generate = async (req, res, next) => {
   let pass = "";
   try {
+    console.log(JSON.stringify({request: req.body}))
     const { numWords, charLimit, seperator, camelCase } = req.body;
-    pass = assembleRandomPass(numWords, seperator, camelCase);
+    pass = assembleRandomPass(numWords, charLimit, seperator, camelCase);
     console.log(pass);
   } catch (err) {
     next(err);
