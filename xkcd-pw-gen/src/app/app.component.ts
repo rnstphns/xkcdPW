@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DictService } from './dict.service';
 
@@ -24,7 +24,7 @@ import { DictService } from './dict.service';
               </select>
               <label for="seperator">seperator</label>
               <select formControlName="seperator" name="seperator" id="seperator">
-                <option value="none">none</option>
+                <option value="">none</option>
                 <option value=" ">[space]</option>
                 <option value="-">-</option>
                 <option value="_">_</option>
@@ -37,8 +37,8 @@ import { DictService } from './dict.service';
               <input type="checkbox" formControlName="camelCase" id="camel-case" [defaultChecked]="false">
               <button class="submit" type="submit">Generate</button>
             </form>
-            <div *ngIf="generatedPass !== undefined; else password_display">
-                <p>{{generatedPass}}</p>
+            <div *ngIf="this.generatedPass != undefined; else password_display">
+              <p>{{this.generatedPass}}</p>
             </div>
             <ng-template #password_display>
               <h1>~password will go here~</h1>
@@ -49,13 +49,13 @@ import { DictService } from './dict.service';
 })
 export class AppComponent {
   form!: FormGroup;
-  generatedPass: string | undefined;
+  generatedPass!: string;
 
   constructor(private formBuilder: FormBuilder, private dict: DictService) {
     this.form = formBuilder.group({
       'numWords': ['4'],
       'charLimit': ['-1'],
-      'seperator': ['none'],
+      'seperator': [''],
       'partialWords': [''],
       'camelCase': ['']
     })
@@ -69,9 +69,10 @@ export class AppComponent {
     let camelCase = this.form.value.camelCase
     if(partialWords === "") partialWords = false
     if(camelCase === "") camelCase = false
-    const formObj: JSON = JSON.parse(`{ "numWords" : ${numWords}, "charLimit": ${charLimit}, "seperator": "${seperator}", "partialWords": "${partialWords}", "camelCase": "${camelCase}" }`);
-    this.generatedPass = this.dict.generatePass(formObj);
+    const formObj: JSON = JSON.parse(`{"numWords":${numWords},"charLimit":${charLimit},"seperator":"${seperator}","partialWords":"${partialWords}","camelCase":"${camelCase}"}`);
+    this.generatedPass = this.dict.generatePass(formObj)  
   }
 
-
 }
+
+

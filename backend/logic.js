@@ -1,7 +1,7 @@
 const dict = require("./dict");
 
 randomWord = (type) => {
-//   console.log(`recieved type ${type}`);
+  //   console.log(`recieved type ${type}`);
   switch (type) {
     case "adjective":
       return dict.getRandomAdjective();
@@ -20,26 +20,26 @@ randomWord = (type) => {
 
 wordFromRandomTable = () => {
   const table = Math.floor(Math.random() * 4);
-//   console.log(table);
+  //   console.log(table);
   switch (table) {
     case 0: {
-    //   console.log(`random adjective`);
+      //   console.log(`random adjective`);
       return dict.getRandomAdjective();
     }
     case 1: {
-    //   console.log(`random adverb`);
+      //   console.log(`random adverb`);
       return dict.getRandomAdverb();
     }
     case 2: {
-    //   console.log(`random noun`);
+      //   console.log(`random noun`);
       return dict.getRandomNoun();
     }
     case 3: {
-    //   console.log(`random verb`);
+      //   console.log(`random verb`);
       return dict.getRandomVerb();
     }
     default: {
-    //   console.log(`default random dictionary case reached`);
+      //   console.log(`default random dictionary case reached`);
       return dict.getRandomNoun();
     }
   }
@@ -48,12 +48,12 @@ wordFromRandomTable = () => {
 assembleRandomPass = (numWords, seperator, camelCase) => {
   let password = "";
   for (let index = 0; index < numWords; index++) {
-    let random = randomWord()
-    if(camelCase) {
-        firstLetter = random.charAt(0)
-        let firstLetterCap = firstLetter.toUpperCase()
-        let remainingLetters = random.slice(1)
-        random = firstLetterCap + remainingLetters
+    let random = randomWord();
+    if (camelCase) {
+      firstLetter = random.charAt(0);
+      let firstLetterCap = firstLetter.toUpperCase();
+      let remainingLetters = random.slice(1);
+      random = firstLetterCap + remainingLetters;
     }
     password += random;
     password += seperator;
@@ -62,12 +62,13 @@ assembleRandomPass = (numWords, seperator, camelCase) => {
 };
 
 module.exports.generate = async (req, res, next) => {
+  let pass = "";
   try {
     const { numWords, charLimit, seperator, camelCase } = req.body;
-    const pass = assembleRandomPass(numWords, seperator, camelCase);
+    pass = assembleRandomPass(numWords, seperator, camelCase);
     console.log(pass);
-    res.json({ success: true, password: pass });
   } catch (err) {
     next(err);
   }
+  res.json({ success: true, password: pass });
 };
