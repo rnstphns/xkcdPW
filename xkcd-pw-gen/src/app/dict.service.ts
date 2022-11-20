@@ -1,12 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { EventEmitter, Injectable, OnDestroy, Output } from '@angular/core'
+import {  Injectable } from '@angular/core'
 
 @Injectable({
   providedIn: 'root'
 })
 export class DictService {
 
-  // @Output() generatedPassEvent = new EventEmitter<string>();
   generatedPass!: string;
   url: string = 'http://localhost:3000/'
   
@@ -22,9 +21,6 @@ export class DictService {
       if(passResp.success) 
         this.generatedPass = passResp.password
       else this.generatedPass = `something went wrong on the backend...`
-      // if(passResp.success) 
-      //   this.generatedPassEvent.emit(passResp.password)
-      // else this.generatedPassEvent.emit(`something went wrong on the backend...`)
     })
     return this.generatedPass
   }
