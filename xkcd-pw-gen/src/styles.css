@@ -16,8 +16,17 @@ a{
     text-align: center;
     color:aliceblue;
   }
+.content label, select, input{
+  margin: 5px;
+  padding: 2px;
+}
 body .footer {
     font-family: 'Courier New', Courier, monospace;
     font-size: small;
     color:yellowgreen;
   }
+button{
+  border-radius: 15px;
+  min-width: 100px;
+  min-height: 40px;
+}

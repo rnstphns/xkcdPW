@@ -45,7 +45,13 @@ wordFromRandomTable = () => {
   }
 };
 
-assembleRandomPass = (numWords, charLimit, seperator, camelCase) => {
+assembleRandomPass = (
+  numWords,
+  charLimit,
+  seperator,
+  partialWords,
+  camelCase
+) => {
   let password = "";
   for (let index = 0; index < numWords; index++) {
     let random = randomWord();
@@ -58,24 +64,50 @@ assembleRandomPass = (numWords, charLimit, seperator, camelCase) => {
     password += random;
     password += seperator;
   }
-  if(charLimit !== -1){
-    password = password.substring(0, charLimit)
+  if (charLimit !== -1 && partialWords === "true") {
+    password = password.substring(0, charLimit);
   }
-  if(seperator !== ""){
-    password = password.substring(0, password.length-1).trim()
+  if (seperator !== "") {
+    password = password.substring(0, password.length - 1).trim();
   }
   return password;
 };
 
+let rerolls = 0;
+const REROLL_LIMIT = 10;
+
+reroll = (numWords, charLimit, seperator, partialWords, camelCase) => {
+  while(rerolls < REROLL_LIMIT){
+    console.log(`rerolling... ${rerolls} times`);
+    rerolls++;
+    assembleRandomPass(numWords, charLimit, seperator, partialWords, camelCase);
+  }
+};
+
 module.exports.generate = async (req, res, next) => {
   let pass = "";
+  let resJson = { success: false };
   try {
-    console.log(JSON.stringify({request: req.body}))
-    const { numWords, charLimit, seperator, camelCase } = req.body;
-    pass = assembleRandomPass(numWords, charLimit, seperator, camelCase);
-    console.log(pass);
+    console.log(JSON.stringify({ request: req.body }));
+    const { numWords, charLimit, seperator, partialWords, camelCase } =
+      req.body;
+    pass = assembleRandomPass(
+      numWords,
+      charLimit,
+      seperator,
+      partialWords,
+      camelCase
+    );
+    if (pass.length > charLimit && charLimit !== -1 && partialWords === "false")
+      pass = reroll(numWords, charLimit, seperator, partialWords, camelCase);
+    else {
+      rerolls = 0;
+      resJson = { success: true, password: pass };
+    }
+    console.log(`pass returned : ${pass}`);
+    rerolls = 0;
+    res.json(resJson);
   } catch (err) {
     next(err);
   }
-  res.json({ success: true, password: pass });
 };
