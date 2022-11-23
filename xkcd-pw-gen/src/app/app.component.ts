@@ -5,12 +5,14 @@ import { DictService } from './dict.service';
 @Component({
   selector: 'app-root',
   template: `
+    <div class="password">
     <div *ngIf="this.generatedPass != undefined; else password_display">
               <h2>{{this.generatedPass}}</h2>
             </div>
-            <ng-template #password_display>
+            <ng-template #password_display class="password">
               <h1>~</h1>
             </ng-template>
+      </div>
             <form [formGroup]="form" (ngSubmit)="sendPass()" class="form">
               <div class="input-area">
                 <label for="num-words">number of words</label>
