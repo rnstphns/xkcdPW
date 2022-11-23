@@ -85,6 +85,7 @@ reroll = (numWords, charLimit, seperator, partialWords, camelCase) => {
 };
 
 module.exports.generate = async (req, res, next) => {
+  console.log(req);
   let pass = "";
   let resJson = { success: false };
   try {

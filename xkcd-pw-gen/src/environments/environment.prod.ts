@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backendUrl: 'Passwordbackend-env.eba-mzjpfxpb.us-east-1.elasticbeanstalk.com'
+  backendUrl: 'https://0x5qqddg11.execute-api.us-east-1.amazonaws.com/v1/'
 };

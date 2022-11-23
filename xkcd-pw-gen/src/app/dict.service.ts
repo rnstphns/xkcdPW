@@ -9,13 +9,14 @@ import { environment } from 'src/environments/environment';
 export class DictService {
 
   url: string = environment.backendUrl;
-  
   constructor(private http: HttpClient) { }
 
   generatePass(form: JSON): Observable<Object> {
     // console.log(`recieved req ${JSON.stringify(form)}`)
     return this.http.post(this.url, form,
-      { headers: new HttpHeaders({ "Content-Type": "application/json" }) }
+      { headers: new HttpHeaders({ "Content-Type": "application/json",  
+                                  "Access-Control-Allow-Origin": "*",
+                                  "Access-Control-Allow-Credentials": "true" }) }
     )
   }
 }
